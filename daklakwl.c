@@ -252,14 +252,8 @@ static bool daklakwl_seat_composing_handle_key_event(struct daklakwl_seat *seat,
 			return false;
 		daklakwl_seat_composing_commit(seat);
 		return false;
-	case XKB_KEY_period:
-	case XKB_KEY_colon:
-	case XKB_KEY_semicolon:
-	case XKB_KEY_comma:
-	case XKB_KEY_question:
-	case XKB_KEY_Up:
-	case XKB_KEY_Down:
-	case XKB_KEY_Return:
+	}
+	if (!((keysym >= XKB_KEY_a && keysym <= XKB_KEY_z) || (keysym >= XKB_KEY_A && keysym <= XKB_KEY_Z))) {
 		if (seat->buffer.len == 0)
 			return false;
 		daklakwl_seat_composing_commit(seat);
@@ -801,7 +795,6 @@ static void daklakwl_state_run(struct daklakwl_state *state)
 	char buffer[1024];
 	while (state->running && !interrupted) {
 		int timeout = daklakwl_state_next_timer(state);
-		printf("%d\n", timeout);
 		if (poll(state->fds, state->nfds, timeout) == -1) {
 			if (errno == EINTR)
 				continue;
