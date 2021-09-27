@@ -202,8 +202,7 @@ static bool daklakwl_seat_composing_handle_key_event(struct daklakwl_seat *seat,
 	bool ctrl_active = xkb_state_mod_name_is_active(
 	    seat->xkb_state, XKB_MOD_NAME_CTRL, XKB_STATE_EFFECTIVE);
 
-	switch (keysym) {
-	case XKB_KEY_BackSpace:
+	if (keysym == XKB_KEY_BackSpace) {
 		if (seat->buffer.len == 0)
 			return false;
 		daklakwl_buffer_delete_backwards_all(&seat->buffer, 1);
@@ -211,7 +210,8 @@ static bool daklakwl_seat_composing_handle_key_event(struct daklakwl_seat *seat,
 		if (seat->buffer.len == 0)
 			daklakwl_seat_composing_commit(seat);
 		return true;
-	case XKB_KEY_Delete:
+	}
+	else if (keysym == XKB_KEY_Delete) {
 		if (seat->buffer.len == 0)
 			return false;
 		daklakwl_buffer_delete_forwards_all(&seat->buffer, 1);
@@ -219,7 +219,8 @@ static bool daklakwl_seat_composing_handle_key_event(struct daklakwl_seat *seat,
 		if (seat->buffer.len == 0)
 			daklakwl_seat_composing_commit(seat);
 		return true;
-	case XKB_KEY_Left:
+	}
+	else if (keysym == XKB_KEY_Left) {
 		if (seat->buffer.len == 0)
 			return false;
 		if (seat->buffer.pos == 0) {
@@ -229,7 +230,8 @@ static bool daklakwl_seat_composing_handle_key_event(struct daklakwl_seat *seat,
 		daklakwl_buffer_move_left(&seat->buffer);
 		daklakwl_seat_composing_update(seat);
 		return true;
-	case XKB_KEY_Right:
+	}
+	else if (keysym == XKB_KEY_Right) {
 		if (seat->buffer.len == 0)
 			return false;
 		if (seat->buffer.pos == seat->buffer.len) {
@@ -239,7 +241,8 @@ static bool daklakwl_seat_composing_handle_key_event(struct daklakwl_seat *seat,
 		daklakwl_buffer_move_right(&seat->buffer);
 		daklakwl_seat_composing_update(seat);
 		return true;
-	case XKB_KEY_space:
+	}
+	else if (keysym == XKB_KEY_space) {
 		if (ctrl_active) {
 			seat->is_composing = false;
 			daklakwl_send_message_to_socket_clients(
@@ -253,7 +256,8 @@ static bool daklakwl_seat_composing_handle_key_event(struct daklakwl_seat *seat,
 		daklakwl_seat_composing_commit(seat);
 		return false;
 	}
-	if (!((keysym >= XKB_KEY_a && keysym <= XKB_KEY_z) || (keysym >= XKB_KEY_A && keysym <= XKB_KEY_Z))) {
+	else if (!((keysym >= XKB_KEY_a && keysym <= XKB_KEY_z)
+		   || (keysym >= XKB_KEY_A && keysym <= XKB_KEY_Z))) {
 		if (seat->buffer.len == 0)
 			return false;
 		daklakwl_seat_composing_commit(seat);
