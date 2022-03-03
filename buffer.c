@@ -212,7 +212,7 @@ static char const *const vowel_or_accents[] = {
 
 static char const *const vowel_ox_accents[] = {
     [L'o'] = "ỗ",
-    [L'w'] = "ợ",
+    [L'w'] = "ỡ",
 };
 
 static char const *const vowel_oj_accents[] = {
@@ -320,7 +320,7 @@ static char const *const vowel_upper_or_accents[] = {
 
 static char const *const vowel_upper_ox_accents[] = {
     [L'o'] = "Ỗ",
-    [L'w'] = "Ợ",
+    [L'w'] = "Ỡ",
 };
 
 static char const *const vowel_upper_oj_accents[] = {
@@ -1170,6 +1170,12 @@ static int daklakwl_buffer_compose_vowels(struct daklakwl_buffer *buf)
 			daklakwl_buffer_steps_append(buf, offset + 0, c2);
 			return 1;
 		}
+		else if (c1_accents && c1_accents[lower_c2]) {
+			daklakwl_buffer_delete_backwards(buf, 2);
+			daklakwl_buffer_append(buf, c1_accents[lower_c2]);
+			daklakwl_buffer_steps_append(buf, offset + 1, c2);
+			return 1;
+		}
 		else if (c0_accents && c0_accents[lower_c2]) {
 			daklakwl_buffer_delete_backwards(buf, 1);
 			daklakwl_buffer_move_left(buf);
@@ -1177,12 +1183,6 @@ static int daklakwl_buffer_compose_vowels(struct daklakwl_buffer *buf)
 			daklakwl_buffer_append(buf, c0_accents[lower_c2]);
 			daklakwl_buffer_move_right(buf);
 			daklakwl_buffer_steps_append(buf, offset + 0, c2);
-			return 1;
-		}
-		else if (c1_accents && c1_accents[lower_c2]) {
-			daklakwl_buffer_delete_backwards(buf, 2);
-			daklakwl_buffer_append(buf, c1_accents[lower_c2]);
-			daklakwl_buffer_steps_append(buf, offset + 1, c2);
 			return 1;
 		}
 	}
