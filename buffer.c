@@ -939,19 +939,12 @@ static int daklakwl_buffer_compose_vowels(struct daklakwl_buffer *buf)
 	wchar_t *wc_text = buf->wc_text;
 	wchar_t c0 = '\0', c1 = '\0', c2 = '\0', c3 = '\0', c4 = '\0';
 	size_t wc_pos = buf->wc_pos;
-	size_t vowel_len = 1;
 
 	c0 = wc_text[0];
 	if (wc_pos >= 2)
 		c1 = wc_text[1];
-	if (is_vowel(c1)) {
-		vowel_len = 2;
-	}
 	if (wc_pos >= 3)
 		c2 = wc_text[2];
-	if (is_vowel(c2) && vowel_len == 2) {
-		vowel_len = 3;
-	}
 	if (wc_pos >= 4)
 		c3 = wc_text[3];
 	if (wc_pos == 5) {
